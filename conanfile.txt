@@ -1,9 +1,23 @@
 [requires]
-opencv/4.1.1@conan/stable
+opencv/4.1.1@dodoent/stable
 boost/1.71.0@conan/stable
 
 [options]
 boost:header_only=True
+opencv:webp=False
+opencv:jasper=False
+opencv:openexr=False
+opencv:dc1394=False
+opencv:protobuf=False
+opencv:freetype=False
+opencv:harfbuzz=False
+opencv:eigen=False
+opencv:glog=False
+opencv:gflags=False
+opencv:quirc=False
+opencv:tiff=False
+opencv:jpeg=False
+opencv:png=False
 
 [imports]
 res, haarcascades/haarcascade_frontalface_alt.xml -> .

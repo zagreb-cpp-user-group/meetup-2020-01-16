@@ -1,0 +1,15 @@
+# for obtaining os_build and arch_build
+include(default)
+
+[settings]
+os=Emscripten
+arch=wasm
+compiler=clang
+compiler.libcxx=libc++
+compiler.version=6.0
+
+[env]
+CONAN_CMAKE_GENERATOR = Ninja
+
+[build_requires]
+emsdk_installer/1.38.29@bincrafters/stable
