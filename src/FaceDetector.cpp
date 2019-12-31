@@ -17,9 +17,8 @@ auto createFaceDetector() -> Result< FaceDetector >
 
 auto FaceDetector::detectFaces( cv::Mat const & image ) -> std::vector< cv::Rect >
 {
-    cv::Mat grayImage = image;
-    if ( image.channels() == 3 ) cvtColor( image, grayImage, cv::COLOR_BGR2GRAY  );
-    if ( image.channels() == 4 ) cvtColor( image, grayImage, cv::COLOR_BGRA2GRAY );
+    cv::Mat grayImage;
+    cvtColor( image, grayImage, cv::COLOR_RGBA2GRAY );
 
     cv::equalizeHist( grayImage, grayImage );
 
