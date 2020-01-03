@@ -304,14 +304,179 @@ auto succeedOrDie( Outcome && outcome ) {
 
 ## Exporting C++ functions to Javascript
 
-- TODO:
-    - C API and exports
-    - EMSCRIPTEN_KEEPALIVE
-    - Embind classes
-    - Embind value objects
-    - WebIDL
-    - Modularize option
-    - step-through example
+```c++
+#include <math.h>
+#include <emscripten.h>
+
+EMSCRIPTEN_KEEPALIVE
+int int_sqrt(int x) {
+  return sqrt(x);
+}
+```
+
+To call from Javascript, use `cwrap` or `ccall`:
+
+```js
+var int_sqrt = Module.cwrap('int_sqrt', 'number', ['number']);
+var result = int_sqrt(12);
+```
+
+---
+
+## Exporting C++ functions to Javascript (2)
+
+Calling with `ccall`:
+
+```js
+// Call C from JavaScript
+var result = Module.ccall('int_sqrt', // name of C function
+  'number', // return type
+  ['number'], // argument types
+  [28]); // arguments
+```
+
+Direct call (works only for primitive types):
+
+```js
+var result = Module._int_sqrt(28);
+```
+
+---
+
+## Exporting C++ classes and value objects
+
+- very difficult and pointless to do that manually
+- two possible solutions:
+    - [Embind](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html)
+    - [WebIDL Binder](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html)
+
+---
+
+## Embind
+
+- requires C++14
+- entire JS interface defined in C++ code
+- bindings are specified in `EMSCRIPTEN_BINDINGS` blocks
+
+---
+
+## Embind class binding example
+
+```c++
+class EmscriptenFaceDetector
+{
+public:
+    EmscriptenFaceDetector();
+    EmscriptenFaceDetection detectFaces( emscripten::val const & jsImageData );
+
+private:
+    FaceDetector detector_;
+    cv::Mat rgbaImage_;
+};
+```
+
+---
+
+## Embind bindings code
+
+```c++
+using namespace emscripten;
+EMSCRIPTEN_BINDINGS( FaceDetector )
+{
+    class_< EmscriptenFaceDetector >( "FaceDetector" )
+        .constructor()
+        .function( "detectFaces", &EmscriptenFaceDetector::detectFaces );
+}
+```
+
+---
+
+## JS class usage
+
+```js
+var faceDetector = new Module.FaceDetector();
+var detectionResult = faceDetector.detectFaces( image );
+
+// free the memory
+faceDetector.delete();
+```
+
+- **NOTE**
+    - JS does not support finalizers
+    - JS garbage collector will cleanup only the JS proxy object
+    - `delete` must be called to prevent leaks on the emscripten heap
+
+---
+
+## Embind value object example
+
+```c++
+struct EmscriptenFaceDetection
+{
+    bool detected = false;
+    int  x        = 0;
+    int  y        = 0;
+    int  width    = 0;
+    int  height   = 0;
+};
+```
+
+---
+
+## Embind bindings code
+
+```c++
+using namespace emscripten;
+EMSCRIPTEN_BINDINGS( FaceDetector )
+{
+    value_object< EmscriptenFaceDetection >( "FaceDetection" )
+        .field( "detected", &EmscriptenFaceDetection::detected )
+        .field( "x"       , &EmscriptenFaceDetection::x        )
+        .field( "y"       , &EmscriptenFaceDetection::y        )
+        .field( "width"   , &EmscriptenFaceDetection::width    )
+        .field( "height"  , &EmscriptenFaceDetection::height   );
+}
+```
+
+---
+
+## JS object usage
+
+- `FaceDetection` is normal JS object, on JS garbage-collected heap
+- developer does not need to manually call `delete`
+- however, each transition of the JS ⬌ WebAssembly boundary creates a new copy
+
+---
+
+## Handling JS objects in C++
+
+- [`emscripten::val` type](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#using-val-to-transliterate-javascript-to-c)
+    - a proxy type to any JS object
+    - provides utilities for accessing global JS properties
+    - can be used to transliterate JS code into C++
+- for example, obtaining width and height of the JS `ImageData` object:
+
+```c++
+void obtainImage( emscripten::val const & jsImageData )
+{
+    auto width = jsImageData[ "width" ].as< unsigned long >();
+    auto height = jsImageData[ "height" ].as< unsigned long >();
+}
+```
+
+---
+
+## Generating modularized Javascript API
+
+- by default, all C++ functions and objects are exported as members of global `Module` object
+    - this may cause conflicts with other Emscripten-generated JS libraries
+- by linking with `-s MODULARIZE=1 -s EXPORT_NAME=ModuleName` Emscripten will generate a JS function named `ModuleName` which is used for initialization of WebAssembly
+
+---
+
+<!-- _class: lead -->
+
+# Step-by-step example
 
 ---
 
