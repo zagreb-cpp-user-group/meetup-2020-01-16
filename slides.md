@@ -180,9 +180,138 @@ style: |
     - [file system support](https://emscripten.org/docs/porting/files/index.html)
     - [OpenAL implementation using Audio API](https://emscripten.org/docs/porting/Audio.html)
     - [EGL and OpenGL implementation using WebGL](https://emscripten.org/docs/porting/multimedia_and_graphics/index.html)
+
+---
+
+## Emscripten SDK (continued)
+
 - [supports mixing C++ and Javascript code](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#interacting-with-code)
 - [provides a simple facility for exporting C++ functions to Javascript](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html)
 - automatically generates JS initialization code
+- provides CMake toolchain file for easy porting of CMake-based projects
+
+---
+
+## POSIX threads support
+
+- simply compile and link your code with `-s USE_PTHREADS=1` and use the usual `pthread_*` set of functions or `std::thread`
+- features require support for [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Worker) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
+    - SharedArrayBuffer disabled in most browsers due to [Spectre and Meltdown set of bugs](https://meltdownattack.com)
+    - however, it's available in Google Chrome for Desktop v67 and above
+- if building without thread support, `pthread_*` functions are still available, but calling them will crash your code
+
+---
+
+## File system support
+
+- implemented with standard `fopen` and friends
+- works with `std::fstream` and other abstractions over `fopen` and friends
+- all required files need to be packaged at link time using `--preload-file` linker option
+    - `--preload-file real/path@/virtual/path`
+    - all packaged files are packed into a single `.data` file
+    - automatically generated JS code automatically downloads the `.data` file and initializes the virtual file system during runtime initialization
+
+---
+
+## File writing support
+
+- multiple backends for standard functions:
+    - MEMFS
+        - in-memory, all writes lost after page reload
+    - NODEFS
+        - wraps NodeJS filesystem functions
+    - IDBFS
+        - uses browser's IndexedDB for storing data
+    - WORKERFS
+        - read-only access to `File` and `Blob` objects inside a web worker
+
+---
+
+## File system backends
+
+- by default, MEMFS is used (and is always mounted at `/`)
+- Javascript code can initialize other backends for other mount points
+    - this is currently not possible from C++ 😞
+- Emscripten also has its own [Asynchronous File System API](https://emscripten.org/docs/api_reference/emscripten.h.html#emscripten-h-asynchronous-file-system-api)
+    - API to fetch files from the web asynchronously
+    - a separate API, not a backend for `fopen` and friends
+
+---
+
+## EGL and OpenGL ES
+
+- imlemented with JS glue code forwarding GL calls to WebGL
+- [EGL](https://emscripten.org/docs/porting/multimedia_and_graphics/EGL-Support-in-Emscripten.html) used for creating WebGL context
+    - identical procedure as in Android NDK
+- [WebGL is subset of OpenGL ES 2.0/3.0](https://emscripten.org/docs/porting/multimedia_and_graphics/OpenGL-support.html)
+    - if only compatible features are used, mapping is 1:1
+    - Emscripten also supports emulating OpenGL ES features not available in WebGL
+        - however, this comes with some performance cost
+- both WebGL 1 and WebGL 2 are supported
+
+---
+
+## Mixing C++ and Javascript code
+
+```c++
+#include <emscripten.h>
+
+EM_JS(void, call_alert, (), {
+  alert('hello world!');
+  throw 'all done';
+});
+
+int main() {
+  call_alert();
+  return 0;
+}
+```
+
+---
+
+## Inline mixing of code
+
+```c++
+#include <emscripten.h>
+
+int main() {
+  EM_ASM(
+    alert('hello world!');
+    throw 'all done';
+  );
+  return 0;
+}
+```
+
+---
+
+## Passing parameters from C++ to JS
+
+```c++
+template< typename Outcome >
+auto succeedOrDie( Outcome && outcome ) {
+    if ( outcome.has_value() ) {
+        return std::forward< Outcome >( outcome ).value();
+    } else {
+        EM_ASM_( {
+            throw new Error( UTF8ToString( $0 ) );
+        }, outcome.error().data() );
+    }
+}
+```
+
+---
+
+## Exporting C++ functions to Javascript
+
+- TODO:
+    - C API and exports
+    - EMSCRIPTEN_KEEPALIVE
+    - Embind classes
+    - Embind value objects
+    - WebIDL
+    - Modularize option
+    - step-through example
 
 ---
 
