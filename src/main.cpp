@@ -69,10 +69,7 @@ private:
         rgbaImage_.create( height, width, CV_8UC4 );
         auto imgData = jsImageData[ "data" ].as< emscripten::val >();
 
-        // taken from https://sean.voisen.org/blog/2018/03/rendering-images-emscripten-wasm/
         auto length = imgData[ "length" ].as< unsigned int >();
-        emscripten::val memory = emscripten::val::module_property( "buffer" );
-
         std::uint8_t * destBuffer = rgbaImage_.data;
         emscripten::val memoryView( emscripten::typed_memory_view( length, destBuffer ) );
         memoryView.call< void >( "set", imgData );
