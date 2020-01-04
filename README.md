@@ -30,3 +30,4 @@ You will need [CMake](https://cmake.org), [Ninja](https://ninja-build.org) and [
 
     ```python3 -m http.server --directory ./bin 8080```
 1. Navigate your browser to `http://localhost:8080` and allow camera access.
+1. **Note**: The camera access will work only on `localhost`. If you want other users to have access to the camera, you will need to serve the directory via HTTPS, as most browsers do not allow camera access for [non-secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts).
