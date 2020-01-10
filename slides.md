@@ -17,7 +17,8 @@ meetup@microblink.com
 
 # Emscripten
 
-A toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
+From [emscripten.org](https://emscripten.org):
+> a toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
 
 - compiler based on LLVM (clang)
 - SDK providing common libraries
@@ -105,6 +106,7 @@ A toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets
 
 # WebAssembly
 
+From [webassembly.org](https://webassembly.org):
 > a binary instruction format for a stack-based virtual machine. Wasm is designed as a portable target for compilation of high-level languages like C/C++/Rust, enabling deployment on the web for client and server applications.
 
 ---
