@@ -1,55 +1,23 @@
 ---
 marp: true
-theme: gaia
-backgroundColor: black
-color: white
+theme: microblink
 paginate: false
-style: |
-    a {
-        color: white
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #48b2e8
-    }
-    code, code[class*='language'] {
-        background: #222
-    }
-    section.lead h2 {
-        color: #48b2e8;
-        text-align: left;
-        font-size: xx-large;
-
-        position: relative;
-        top: 6em
-    }
-    section.lead h3 {
-        color: #48b2e8;
-        text-align: right;
-        font-size: xx-large;
-
-        position: relative;
-        top: 2em
-    }
-    table {
-        width:100%;
-    }
 ---
 
-<!-- _class: lead -->
+<!-- _class: title -->
 
 # Porting your C++ code to the web with Emscripten
 
-## Nenad Mikša,
-## Head of TSI @ Microblink
+Nenad Mikša, Head of TSI @ Microblink
 
-### @dodo at cpplang.slack.com
-### meetup@microblink.com
+@dodo at cpplang.slack.com
+meetup@microblink.com
 
 ---
 
 # Emscripten
 
-> a toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
+A toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
 
 - compiler based on LLVM (clang)
 - SDK providing common libraries
@@ -69,7 +37,7 @@ style: |
 
 ---
 
-## Fastcomp backend
+# Fastcomp backend
 
 - compilation steps:
     - C++ ➞ Bitcode
@@ -78,7 +46,7 @@ style: |
 
 ---
 
-## Fastcomp build steps
+# Fastcomp build steps
 
 - C++ ➞ Bitcode
     - based on clang 6 (partial c++17 support)
@@ -90,7 +58,7 @@ style: |
 
 ---
 
-### Fastcomp backend - advantages and disadvantages
+# Fastcomp backend - advantages and disadvantages
 
 - slow linking phase
     - effectively LTO always enabled
@@ -101,7 +69,7 @@ style: |
 
 ---
 
-## Upstream backend
+# Upstream backend
 
 - compilation steps:
     - C++ ➞ WebAssembly
@@ -112,7 +80,7 @@ style: |
 
 ---
 
-## Upstream build steps
+# Upstream build steps
 
 - C++ ➞ WebAssembly
     - based on upstream LLVM project (currently clang 10)
@@ -122,7 +90,7 @@ style: |
 
 ---
 
-### Upstream backend - advantages and disadvantages
+# Upstream backend - advantages and disadvantages
 
 - fast linking
 - supports latest c++ features
@@ -140,8 +108,8 @@ style: |
 > a binary instruction format for a stack-based virtual machine. Wasm is designed as a portable target for compilation of high-level languages like C/C++/Rust, enabling deployment on the web for client and server applications.
 
 ---
-
-## Differences to Javascript
+<!-- class: table -->
+# Differences to Javascript
 
 | WebAssembly                        | Javascript                          |
 | :-                                 | :-                                  |
@@ -152,7 +120,7 @@ style: |
 
 ---
 
-## Current limitations of WebAssembly
+# Current limitations of WebAssembly
 
 - no support for threads
 - no support for SIMD
@@ -162,7 +130,7 @@ style: |
 
 ---
 
-## Future of WebAssembly
+# Future of WebAssembly
 
 - support for [threads](https://github.com/WebAssembly/proposals/issues/14)
 - support for [SIMD](https://github.com/WebAssembly/proposals/issues/1)
@@ -183,7 +151,7 @@ style: |
 
 ---
 
-## Emscripten SDK (continued)
+# Emscripten SDK (continued)
 
 - [supports mixing C++ and Javascript code](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#interacting-with-code)
 - [provides a simple facility for exporting C++ functions to Javascript](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html)
@@ -192,7 +160,7 @@ style: |
 
 ---
 
-## POSIX threads support
+# POSIX threads support
 
 - simply compile and link your code with `-s USE_PTHREADS=1` and use the usual `pthread_*` set of functions or `std::thread`
 - features require support for [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Worker) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
@@ -202,7 +170,7 @@ style: |
 
 ---
 
-## File system support
+# File system support
 
 - implemented with standard `fopen` and friends
 - works with `std::fstream` and other abstractions over `fopen` and friends
@@ -213,7 +181,7 @@ style: |
 
 ---
 
-## File writing support
+# File writing support
 
 - multiple backends for standard functions:
     - MEMFS
@@ -227,7 +195,7 @@ style: |
 
 ---
 
-## File system backends
+# File system backends
 
 - by default, MEMFS is used (and is always mounted at `/`)
 - Javascript code can initialize other backends for other mount points
@@ -238,7 +206,7 @@ style: |
 
 ---
 
-## EGL and OpenGL ES
+# EGL and OpenGL ES
 
 - imlemented with JS glue code forwarding GL calls to WebGL
 - [EGL](https://emscripten.org/docs/porting/multimedia_and_graphics/EGL-Support-in-Emscripten.html) used for creating WebGL context
@@ -251,7 +219,7 @@ style: |
 
 ---
 
-## Mixing C++ and Javascript code
+# Mixing C++ and Javascript code
 
 ```c++
 #include <emscripten.h>
@@ -269,7 +237,7 @@ int main() {
 
 ---
 
-## Inline mixing of code
+# Inline mixing of code
 
 ```c++
 #include <emscripten.h>
@@ -285,7 +253,7 @@ int main() {
 
 ---
 
-## Passing parameters from C++ to JS
+# Passing parameters from C++ to JS
 
 ```c++
 template< typename Outcome >
@@ -302,7 +270,7 @@ auto succeedOrDie( Outcome && outcome ) {
 
 ---
 
-## Exporting C++ functions to Javascript
+# Exporting C++ functions to Javascript
 
 ```c++
 #include <math.h>
@@ -323,7 +291,7 @@ var result = int_sqrt(12);
 
 ---
 
-## Exporting C++ functions to Javascript (2)
+# Exporting C++ functions to Javascript (2)
 
 Calling with `ccall`:
 
@@ -343,7 +311,7 @@ var result = Module._int_sqrt(28);
 
 ---
 
-## Exporting C++ classes and value objects
+# Exporting C++ classes and value objects
 
 - very difficult and pointless to do that manually
 - two possible solutions:
@@ -352,7 +320,7 @@ var result = Module._int_sqrt(28);
 
 ---
 
-## Embind
+# Embind
 
 - requires C++14
 - entire JS interface defined in C++ code
@@ -377,7 +345,7 @@ private:
 
 ---
 
-## Embind bindings code
+# Embind bindings code
 
 ```c++
 using namespace emscripten;
@@ -391,7 +359,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-## JS class usage
+# JS class usage
 
 ```js
 var faceDetector = new Module.FaceDetector();
@@ -408,7 +376,7 @@ faceDetector.delete();
 
 ---
 
-## Embind value object example
+# Embind value object example
 
 ```c++
 struct EmscriptenFaceDetection
@@ -423,7 +391,7 @@ struct EmscriptenFaceDetection
 
 ---
 
-## Embind bindings code
+# Embind bindings code
 
 ```c++
 using namespace emscripten;
@@ -440,7 +408,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-## JS object usage
+# JS object usage
 
 - `FaceDetection` is normal JS object, on JS garbage-collected heap
 - developer does not need to manually call `delete`
@@ -448,7 +416,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-## Handling JS objects in C++
+# Handling JS objects in C++
 
 - [`emscripten::val` type](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#using-val-to-transliterate-javascript-to-c)
     - a proxy type to any JS object
@@ -466,7 +434,7 @@ void obtainImage( emscripten::val const & jsImageData )
 
 ---
 
-## Generating modularized Javascript API
+# Generating modularized Javascript API
 
 - by default, all C++ functions and objects are exported as members of global `Module` object
     - this may cause conflicts with other Emscripten-generated JS libraries
@@ -474,12 +442,12 @@ void obtainImage( emscripten::val const & jsImageData )
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: quote-large -->
 
 # Step-by-step example
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: quote-large -->
 
 # Thank you
