@@ -38,7 +38,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Fastcomp backend
+## Fastcomp backend
 
 - compilation steps:
     - C++ ➞ Bitcode
@@ -47,7 +47,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Fastcomp build steps
+### Fastcomp build steps
 
 - C++ ➞ Bitcode
     - based on clang 6 (partial c++17 support)
@@ -59,7 +59,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Fastcomp backend - advantages and disadvantages
+### Fastcomp backend - advantages and disadvantages
 
 - slow linking phase
     - effectively LTO always enabled
@@ -70,7 +70,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Upstream backend
+## Upstream backend
 
 - compilation steps:
     - C++ ➞ WebAssembly
@@ -81,7 +81,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Upstream build steps
+### Upstream build steps
 
 - C++ ➞ WebAssembly
     - based on upstream LLVM project (currently clang 10)
@@ -91,7 +91,7 @@ From [emscripten.org](https://emscripten.org):
 
 ---
 
-# Upstream backend - advantages and disadvantages
+### Upstream backend - advantages and disadvantages
 
 - fast linking
 - supports latest c++ features
@@ -111,7 +111,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 <!-- class: table -->
-# Differences to Javascript
+## Differences to Javascript
 
 | WebAssembly                        | Javascript                          |
 | :-                                 | :-                                  |
@@ -122,7 +122,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# Current limitations of WebAssembly
+## Current limitations of WebAssembly
 
 - no support for threads
 - no support for SIMD
@@ -132,7 +132,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# Future of WebAssembly
+## Future of WebAssembly
 
 - support for [threads](https://github.com/WebAssembly/proposals/issues/14)
 - support for [SIMD](https://github.com/WebAssembly/proposals/issues/1)
@@ -162,7 +162,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# POSIX threads support
+## POSIX threads support
 
 - simply compile and link your code with `-s USE_PTHREADS=1` and use the usual `pthread_*` set of functions or `std::thread`
 - features require support for [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Worker) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
@@ -172,7 +172,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# File system support
+## File system support
 
 - implemented with standard `fopen` and friends
 - works with `std::fstream` and other abstractions over `fopen` and friends
@@ -183,7 +183,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# File writing support
+## File writing support
 
 - multiple backends for standard functions:
     - MEMFS
@@ -197,7 +197,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# File system backends
+## File system backends
 
 - by default, MEMFS is used (and is always mounted at `/`)
 - Javascript code can initialize other backends for other mount points
@@ -208,7 +208,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# EGL and OpenGL ES
+## EGL and OpenGL ES
 
 - imlemented with JS glue code forwarding GL calls to WebGL
 - [EGL](https://emscripten.org/docs/porting/multimedia_and_graphics/EGL-Support-in-Emscripten.html) used for creating WebGL context
@@ -221,7 +221,7 @@ From [webassembly.org](https://webassembly.org):
 
 ---
 
-# Mixing C++ and Javascript code
+## Mixing C++ and Javascript code
 
 ```c++
 #include <emscripten.h>
@@ -239,7 +239,7 @@ int main() {
 
 ---
 
-# Inline mixing of code
+### Inline mixing of code
 
 ```c++
 #include <emscripten.h>
@@ -255,7 +255,7 @@ int main() {
 
 ---
 
-# Passing parameters from C++ to JS
+## Passing parameters from C++ to JS
 
 ```c++
 template< typename Outcome >
@@ -272,7 +272,7 @@ auto succeedOrDie( Outcome && outcome ) {
 
 ---
 
-# Exporting C++ functions to Javascript
+## Exporting C++ functions to Javascript
 
 ```c++
 #include <math.h>
@@ -293,7 +293,7 @@ var result = int_sqrt(12);
 
 ---
 
-# Exporting C++ functions to Javascript (2)
+## Exporting C++ functions to Javascript (2)
 
 Calling with `ccall`:
 
@@ -313,7 +313,7 @@ var result = Module._int_sqrt(28);
 
 ---
 
-# Exporting C++ classes and value objects
+## Exporting C++ classes and value objects
 
 - very difficult and pointless to do that manually
 - two possible solutions:
@@ -347,7 +347,7 @@ private:
 
 ---
 
-# Embind bindings code
+## Embind bindings code
 
 ```c++
 using namespace emscripten;
@@ -361,7 +361,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-# JS class usage
+## JS class usage
 
 ```js
 var faceDetector = new Module.FaceDetector();
@@ -378,7 +378,7 @@ faceDetector.delete();
 
 ---
 
-# Embind value object example
+## Embind value object example
 
 ```c++
 struct EmscriptenFaceDetection
@@ -393,7 +393,7 @@ struct EmscriptenFaceDetection
 
 ---
 
-# Embind bindings code
+## Embind bindings code
 
 ```c++
 using namespace emscripten;
@@ -410,7 +410,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-# JS object usage
+## JS object usage
 
 - `FaceDetection` is normal JS object, on JS garbage-collected heap
 - developer does not need to manually call `delete`
@@ -418,7 +418,7 @@ EMSCRIPTEN_BINDINGS( FaceDetector )
 
 ---
 
-# Handling JS objects in C++
+## Handling JS objects in C++
 
 - [`emscripten::val` type](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#using-val-to-transliterate-javascript-to-c)
     - a proxy type to any JS object
@@ -436,7 +436,7 @@ void obtainImage( emscripten::val const & jsImageData )
 
 ---
 
-# Generating modularized Javascript API
+## Generating modularized Javascript API
 
 - by default, all C++ functions and objects are exported as members of global `Module` object
     - this may cause conflicts with other Emscripten-generated JS libraries
