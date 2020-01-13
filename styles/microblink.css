@@ -151,7 +151,6 @@ blockquote p:after {
 code {
   font-family: "Menlo", "Consolas", "Courier New", Courier, monospace;
   font-size: 17px ;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (min-width: 400px) {
@@ -167,76 +166,84 @@ code {
   }
 }
 
+pre {
+  display: block;
+  overflow-x: auto;
+  padding: 0.25em .5em;
+  background: #23241f;
+  margin-top: 0;
+  border-radius: 6px;
+}
+
 .hljs,
+.hljs-tag,
 .hljs-subst {
-  color: #AEAEB5;
+  color: #f8f8f2;
 }
 
-.hljs-comment {
-  color: #5E5E61;
+.hljs-strong,
+.hljs-emphasis {
+  color: #a8a8a2;
 }
 
-.hljs-keyword,
-.hljs-attribute,
-.hljs-selector-tag,
-.hljs-meta-keyword,
-.hljs-doctag,
-.hljs-name {
-  font-weight: 700;
-}
-
-.hljs-type,
-.hljs-string,
-.hljs-number,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-quote,
-.hljs-template-tag,
-.hljs-deletion {
-  color: #71CEEF;
-}
-
-.hljs-title,
-.hljs-section {
-  color: #71CEEF;
-  font-weight: 700;
-}
-
-.hljs-regexp,
-.hljs-symbol,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-link,
-.hljs-selector-attr,
-.hljs-selector-pseudo {
-  color: #FF617F;
-}
-
-.hljs-literal {
-  color: #FCD25F;
-}
-
-.hljs-built_in,
 .hljs-bullet,
+.hljs-quote,
+.hljs-number,
+.hljs-regexp,
+.hljs-literal,
+.hljs-link {
+  color: #ae81ff;
+}
+
 .hljs-code,
-.hljs-addition {
-  color: #FBC32B;
+.hljs-title,
+.hljs-section,
+.hljs-selector-class {
+  color: #a6e22e;
 }
 
-.hljs-meta {
-  color: #48B2E8;
-}
-
-.hljs-meta-string {
-  color: #97E2FD;
+.hljs-strong {
+  font-weight: bold;
 }
 
 .hljs-emphasis {
   font-style: italic;
 }
 
-.hljs-strong {
-  font-weight: 700;
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-attr {
+  color: #f92672;
+}
+
+.hljs-symbol,
+.hljs-attribute {
+  color: #66d9ef;
+}
+
+.hljs-params,
+.hljs-class .hljs-title {
+  color: #f8f8f2;
+}
+
+.hljs-string,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-selector-id,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-variable {
+  color: #e6db74;
+}
+
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta {
+  color: #75715e;
 }
 
 section {
