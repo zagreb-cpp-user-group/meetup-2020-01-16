@@ -9,7 +9,13 @@ This repository contains code samples and presentation slides shown during C++ m
 
 This repository contains some files on [LFS](https://git-lfs.github.com), so make sure that you have Git LFS support installed prior cloning this repository. Without this, code examples will not work.
 
-# Building and running the example
+# Code example
+
+## Live demo of the example
+
+Live demo of the example is available on [this link](https://zagreb-cpp-user-group.github.io/meetup-2020-01-16/live_demo/index.html)
+
+## Building and running the example
 
 You will need [CMake](https://cmake.org), [Ninja](https://ninja-build.org) and [Conan](https://conan.io) installed on your computer and available in your `PATH`. If running on windows, please use a bash shell.
 
@@ -35,7 +41,3 @@ You will need [CMake](https://cmake.org), [Ninja](https://ninja-build.org) and [
     ```python3 -m http.server --directory ./bin 8080```
 1. Navigate your browser to `http://localhost:8080` and allow camera access.
 1. **Note**: The camera access will work only on `localhost`. If you want other users to have access to the camera, you will need to serve the directory via HTTPS, as most browsers do not allow camera access for [non-secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts).
-
-## Live demo of the example
-
-Live demo of the example is available on [this link](https://zagreb-cpp-user-group.github.io/meetup-2020-01-16/live_demo/index.html)
