@@ -4,3 +4,4 @@ build
 slides.pdf
 slides.pptx
 activate.sh
+.DS_Store
