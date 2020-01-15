@@ -1,54 +1,23 @@
 ---
 marp: true
-theme: gaia
-backgroundColor: black
-color: white
+theme: microblink
 paginate: false
-style: |
-    a {
-        color: white
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #48b2e8
-    }
-    code, code[class*='language'] {
-        background: #222
-    }
-    section.lead h2 {
-        color: #48b2e8;
-        text-align: left;
-        font-size: xx-large;
-
-        position: relative;
-        top: 6em
-    }
-    section.lead h3 {
-        color: #48b2e8;
-        text-align: right;
-        font-size: xx-large;
-
-        position: relative;
-        top: 2em
-    }
-    table {
-        width:100%;
-    }
 ---
 
-<!-- _class: lead -->
+<!-- _class: title -->
 
 # Porting your C++ code to the web with Emscripten
 
-## Nenad Mikša,
-## Head of TSI @ Microblink
+Nenad Mikša, Head of TSI @ Microblink
 
-### @dodo at cpplang.slack.com
-### meetup@microblink.com
+@dodo at cpplang.slack.com
+meetup@microblink.com
 
 ---
 
 # Emscripten
 
+From [emscripten.org](https://emscripten.org):
 > a toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
 
 - compiler based on LLVM (clang)
@@ -78,7 +47,7 @@ style: |
 
 ---
 
-## Fastcomp build steps
+### Fastcomp build steps
 
 - C++ ➞ Bitcode
     - based on clang 6 (partial c++17 support)
@@ -112,7 +81,7 @@ style: |
 
 ---
 
-## Upstream build steps
+### Upstream build steps
 
 - C++ ➞ WebAssembly
     - based on upstream LLVM project (currently clang 10)
@@ -137,10 +106,11 @@ style: |
 
 # WebAssembly
 
+From [webassembly.org](https://webassembly.org):
 > a binary instruction format for a stack-based virtual machine. Wasm is designed as a portable target for compilation of high-level languages like C/C++/Rust, enabling deployment on the web for client and server applications.
 
 ---
-
+<!-- class: table -->
 ## Differences to Javascript
 
 | WebAssembly                        | Javascript                          |
@@ -183,7 +153,7 @@ style: |
 
 ---
 
-## Emscripten SDK (continued)
+# Emscripten SDK (continued)
 
 - [supports mixing C++ and Javascript code](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#interacting-with-code)
 - [provides a simple facility for exporting C++ functions to Javascript](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html)
@@ -269,7 +239,7 @@ int main() {
 
 ---
 
-## Inline mixing of code
+### Inline mixing of code
 
 ```c++
 #include <emscripten.h>
@@ -352,7 +322,7 @@ var result = Module._int_sqrt(28);
 
 ---
 
-## Embind
+# Embind
 
 - requires C++14
 - entire JS interface defined in C++ code
@@ -474,12 +444,12 @@ void obtainImage( emscripten::val const & jsImageData )
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: quote-large -->
 
 # Step-by-step example
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: quote-large -->
 
 # Thank you
