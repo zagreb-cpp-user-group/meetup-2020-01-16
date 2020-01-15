@@ -20,6 +20,10 @@ meetup@microblink.com
 From [emscripten.org](https://emscripten.org):
 > a toolchain for compiling to asm.js and WebAssembly, built using LLVM, that lets you run C and C++ on the web at near-native speed without plugins.
 
+---
+
+# Emscripten
+
 - compiler based on LLVM (clang)
 - SDK providing common libraries
     - file system IO, OpenGL, SDL, threading, networking, ...
