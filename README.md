@@ -5,6 +5,10 @@ This repository contains code samples and presentation slides shown during C++ m
 
 [Slides](https://zagreb-cpp-user-group.github.io/meetup-2020-01-16/index.html) are created with markdown and compiled to HTML using [Marpit](https://marpit.marp.app).
 
+Presentation video (click the image to open video on youtube):
+
+[![Presentation video](https://img.youtube.com/vi/_vc8SSRwwwU/0.jpg)](https://www.youtube.com/watch?v=_vc8SSRwwwU)
+
 # Cloning notes
 
 This repository contains some files on [LFS](https://git-lfs.github.com), so make sure that you have Git LFS support installed prior cloning this repository. Without this, code examples will not work.
